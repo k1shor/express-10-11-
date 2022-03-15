@@ -6,8 +6,7 @@ const cookieParser = require("cookie-parser");
 const sendEmail = require("../utils/setEmail");
 const crypto = require("crypto");
 const Token = require("../Model/token");
-// const token = require("../Model/token");
-// const user = require("../Model/user");
+
 
 // To Add User
 
@@ -219,3 +218,28 @@ exports.resetPassword = async (req, res) =>{
   res.json({message:"password has been rest successfully."})
 
 }
+
+// to view all users
+exports.userList = async (req, res) => {
+  const user = await User.find().select("-hashed_password")
+  if(!user){
+    return res.status(400).json({error:"something went wrong"})
+    }
+    res.send(user)
+}
+
+// to find individual/particular user
+exports.findUser = async(req, res) => {
+  const user = await User.findById(req.params.userid).select("-hashed_password")
+  if(!user){
+    return res.status(400).json({error:"user not found"})
+    }
+    res.send(user)
+}
+
+//authorization
+exports.requireSignin = expressJWT({
+  secret: process.env.JWT_SECRET,
+  algorithms:['HS256'],
+  userProperty: 'auth'
+})
