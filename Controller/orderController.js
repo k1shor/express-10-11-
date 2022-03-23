@@ -55,3 +55,67 @@ return 15
     res.send(order)
 
 }
+
+
+// to view all orders
+exports.orderList = async(req,res) => {
+    const order = await Order.find().populate('user','name')
+    if(!order){
+        return res.status(400).json({error:"something went wrong"})
+    }
+    res.send(order)
+}
+
+// to view order details of a particular order
+exports.orderDetail = async (req,res) => {
+    const order = await Order.findById(req.params.orderid).populate('user','name')
+    .populate({path:'OrderItems',populate:{path:'product',populate:'category'}})
+    if(!order){
+        return res.status(400).json({error:"something went wrong"})
+    }
+    res.send(order)
+}
+
+// to view order details of a particular user
+exports.userOrder = async (req,res) =>{
+    const order = await Order.find({user:req.params.userid})
+    .populate({path:'OrderItems',populate:{path:'product',populate:'category'}})
+    if(!order){
+        return res.status(400).json({error:"something went wrong"})
+    }
+    res.send(order)
+}
+
+// to update order
+exports.updateOrder = async (req,res) =>{
+    const order = await Order.findByIdAndUpdate(req.params.orderid,
+        {
+            status: req.body.status
+        },
+        {new:true})
+        if(!order){
+            return res.status(400).json({error:"something went wrong"})
+        }
+        res.send(order)
+}
+
+
+// to delete order
+exports.deleteOrder = (req, res) =>{
+    Order.findByIdAndRemove(req.params.orderid)
+    .then(async order => {
+        if(order){
+            await order.OrderItems.map( async orderItem =>{
+                await orderItem.findByIdAndRemove(orderItem)
+            })
+            return res.status(200).json({message:"Order deleted successfully"})
+        }
+        else{
+            return res.status(400).json({error:"failed to delete order"})
+        }
+    })
+    .catch(error=>{
+        return res.status(400).json({error:error})
+    })
+}
+
