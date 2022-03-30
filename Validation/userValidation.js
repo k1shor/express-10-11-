@@ -1,6 +1,9 @@
 
 exports.userValidation = (req,res,next) => {
-    req.check('name','Name is required').notEmpty()
+    req.check('first_name','First Name is required').notEmpty()
+    req.check('last_name','Last Name is required').notEmpty()
+    req.check('date_of_birth','date of birth is required').notEmpty()
+    req.check('gender','Gender is required').notEmpty()
     req.check('email','Email is required').notEmpty()
     .isEmail()
     .withMessage('Email format invalid')

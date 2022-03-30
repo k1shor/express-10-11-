@@ -12,7 +12,10 @@ const Token = require("../Model/token");
 
 exports.addUser = async (req, res) => {
   let user = new User({
-    name: req.body.name,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    date_of_birth: req.body.date_of_birth,
+    gender: req.body.gender,
     email: req.body.email,
     password: req.body.password,
   });

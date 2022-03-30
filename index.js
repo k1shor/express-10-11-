@@ -9,6 +9,7 @@ const UserRoute = require('./Route/userRoute')
 const OrderRoute = require('./Route/orderRoute')
 const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
 // const nodemailer = require('nodemailer')
 
 
@@ -26,6 +27,7 @@ app.use('/public/uploads',express.static('public/uploads'))
 app.use(morgan('dev'))
 app.use(expressValidator())
 app.use(cookieParser())
+app.use(cors())
 
 
 app.use('/api',CategoryRoute)
