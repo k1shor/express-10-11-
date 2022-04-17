@@ -22,3 +22,15 @@ exports.productValidation = (req,res,next) => {
     }
     next()
 }
+
+exports.categoryValidation = (req,res,next) =>{
+    req.check('category_name','Category name is required').notEmpty()
+
+    const errors = req.validationErrors()
+
+    if(errors){
+        const showError = errors.map(err => err.msg)[0]
+        return res.status(400).json({error: showError})
+    }
+    next()
+}

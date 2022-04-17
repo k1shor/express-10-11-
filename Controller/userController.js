@@ -94,14 +94,15 @@ res.json({message:"Verfication link has been sent to your email."})
 // Verify User
 
 exports.verifyUser = (req, res) => {
+  // let token = req.params.token
   // to check token
-  Token.findOne({ token: req.params.token }, (error, token) => {
+  Token.findOne({token:req.params.token}, (error, token) => {
     if (error || !token) {
       return res
         .status(400)
         .json({ error:"Invalid token or token may have expired." });
     }
-  });
+  
   User.findOne({ _id: token.userId }, (error, user) => {
     if (error || !user) {
       return res.status(400).json({ error:"Unable to find user." });
@@ -121,6 +122,7 @@ exports.verifyUser = (req, res) => {
       res.json({message:"Congratulations. Your account is verified." });
     });
   });
+});
 };
 
 // Signin

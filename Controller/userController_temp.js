@@ -1,12 +1,8 @@
 const User = require('../Model/user')
 const Token = require('../Model/token')
 const jwt = require('jsonwebtoken')
-// const expressJWT = require('express-jwt')
-const cookieParser = require('cookie-parser')
 const sendEmail = require('../utils/setEmail')
 const crypto = require('crypto')
-// const token = require('../Model/token')
-// const user = require('../Model/user')
 
 
 // to add user
