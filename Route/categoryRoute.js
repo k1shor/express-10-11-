@@ -14,7 +14,7 @@ router.post('/addcategory',requireSignin,categoryValidation, addCategory)
 
 router.get('/categories',showCategories)
 router.get('/findcategory/:id',findCategory)
-router.put('/updateCategory/:id', requireSignin,updateCategory)
+router.put('/updateCategory/:id', requireSignin, categoryValidation,updateCategory)
 router.delete('/deleteCategory/:id', requireSignin,deleteCategory)
 
 
