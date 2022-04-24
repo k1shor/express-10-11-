@@ -1,7 +1,7 @@
 // product validation
 
 exports.productValidation = (req,res,next) => {
-    req.check('product_name','Product name is required').notEmpty()
+    req.check('product_name','Product name is requiredddd').notEmpty()
     req.check('product_price','Product price is required').notEmpty()
     .isNumeric()
     .withMessage('Price must be a number')

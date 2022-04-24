@@ -1,7 +1,7 @@
 const express = require('express')    // to create express api, require - importing 
 require('dotenv').config()
 const db = require('./Database/connection')
-const expressValidator = require('express-validator')
+// const expressValidator = require('express-validator')
 const body_Parser = require('body-parser')
 const CategoryRoute = require('./Route/categoryRoute')
 const ProductRoute = require('./Route/productRoute')
@@ -25,7 +25,7 @@ const port = process.env.PORT  ||  8000
 app.use(body_Parser.json())
 app.use('/public/uploads',express.static('public/uploads'))
 app.use(morgan('dev'))
-app.use(expressValidator())
+// app.use(expressValidator())
 app.use(cookieParser())
 app.use(cors())
 

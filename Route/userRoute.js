@@ -1,10 +1,11 @@
 const express = require('express')
 const { addUser,userSignin, userSignout, verifyUser, resendVerification, forgetPassword, resetPassword, userList, findUser, requireSignin } = require('../Controller/userController')
 // const sendEmail = require('../utils/setEmail')
-const { userValidation } = require('../Validation/userValidation')
+// const { userValidation } = require('../Validation/userValidation')
+const { userCheck, validation } = require('../Validation/validation')
 const router = express.Router()
 
-router.post('/addUser',userValidation,addUser)
+router.post('/addUser',userCheck,validation,addUser)
 router.post('/signin',userSignin)
 router.get('/signout',userSignout)
 router.post('/confirmation/:token', verifyUser)
