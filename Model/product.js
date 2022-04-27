@@ -15,10 +15,10 @@ const productSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
-    // product_image:{
-    //     type:String,
-    //     // required:true,
-    // },
+    product_image:{
+        type:String,
+        // required:true,
+    },
     count_In_Stock:{
         type:Number,
         required:true,
