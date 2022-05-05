@@ -80,3 +80,53 @@ exports.deleteProduct = (req, res) => {
         })
         .catch(error => res.status(400).json({ error: error }))
 }
+
+// to find related products
+exports.findRelated = async (req,res) => {
+    let singleProduct =await Product.findById(req.params.id)
+    let product =await Product.find({category:singleProduct.category, _id:{$ne:singleProduct}}).populate('category','category_name')
+    if(!product){
+        return res.status(400).json({error:"Something went wrong"})
+    }
+    res.send(product)
+}
+
+// to find filtered products
+exports.filterProduct = async (req, res) =>{
+    let order = req.query.order ? req.query.order : 1
+    let sortBy = req.query.order ? req.query.sortBy : '_id'
+    let limit = req.query.order ? parseInt(req.query.limit) : 20000
+    let skip = req.body.skip
+
+    //to get filters
+    let Args = {}
+    for(key in req.body.filters){
+        if(key === 'prices'){
+            Args[key]={
+                $gte: req.body.filters[key][0],
+                $lte: req.body.filters[key][1]
+            }
+        }
+        else{
+            Args[key]=req.body.filters[key]
+        }
+    }
+    
+    
+    let filterProduct = await Product.find(Args)
+    .populate('category')
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .skip(skip)
+
+    if(!filterProduct){
+        return res.status(400).json({error:"something went wrong"})
+    }
+    else{
+        res.status(200).json({
+            size:filterProduct.length,
+            filterProduct
+        })
+    }
+
+}

@@ -1,5 +1,5 @@
 const express = require('express')
-const { addProduct, showProducts, productDetails, updateProduct, deleteProduct } = require('../Controller/productController')
+const { addProduct, showProducts, productDetails, updateProduct, deleteProduct, findRelated } = require('../Controller/productController')
 const { requireSignin } = require('../Controller/userController')
 const upload = require('../middleware/upload')
 const { productValidation } = require('../Validation/productValidation')
@@ -11,6 +11,7 @@ router.get('/showProducts',showProducts)
 router.get('/productdetail/:id',productDetails)
 router.put('/updateproduct/:id',productCheck,validation, updateProduct)
 router.delete('/deleteproduct/:id',deleteProduct)
+router.get('/getrelatedProducts/:id',findRelated)
 
 
 module.exports = router
