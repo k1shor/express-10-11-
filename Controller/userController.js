@@ -39,7 +39,7 @@ exports.addUser = async (req, res) => {
         from: "noreply@ourpage.com",
         to: user.email,
         subject: "Verification Email",
-        text: ` Hello, \n Please click on the following link to verify your email.\n http:\/\/${req.headers.host}\/api\/confirmation\/${token.token}`,
+        text: ` Hello, \n Please click on the following link to verify your email.\n${url}`,
         html: `<button><a href='${url}'>Verify</button>`,
       });
 
@@ -84,7 +84,7 @@ if (!token) {
     from: "noreply@ourpage.com",
     to: user.email,
     subject: "Verification Email",
-    text: ` Hello, \n Please click on the following link to verify your email.\n http:\/\/${req.headers.host}\/api\/confirmation\/${token.token}`,
+    text: ` Hello, \n Please click on the following link to verify your email.\n ${url}`,
     html: `<button><a href='${url}'>Verify</button>`
 })
 
@@ -186,14 +186,14 @@ exports.forgetPassword = async (req, res) => {
   if(!token){
     return res.status(400).json({error: "something went wrong"})
   }
-
+  const url = process.env.FRONTEND_URL + "/resetpassword/" + token.token;
   // const url = `http:\/\/${req.headers.host}\/api\/resetpassword\/${token.token}`
   // send email
   sendEmail({
     from: 'no-reply@ourstore.com',
     to: user.email,
     subject: 'Password Reset Link',
-    text: ` Please click on the link below to reset your password. <br> \n http:\/\/${req.headers.host}\/api\/resetpassword\/${token.token}`,
+    text: ` Please click on the link below to reset your password. <br> \n ${url}`,
     html:`<a href= '${url}'><button>Reset Password</button></a>`
   })
   res.json({message:"Password reset link has been sent to your email"})

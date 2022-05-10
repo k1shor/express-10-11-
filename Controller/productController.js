@@ -100,8 +100,10 @@ exports.filterProduct = async (req, res) =>{
 
     //to get filters
     let Args = {}
-    for(key in req.body.filters){
-        if(key === 'prices'){
+    for(let key in req.body.filters){
+        if(req.body.filters[key].length>0)
+    // req.body.filters.map(key=>{
+        if(key === 'product_price'){
             Args[key]={
                 $gte: req.body.filters[key][0],
                 $lte: req.body.filters[key][1]
@@ -111,7 +113,7 @@ exports.filterProduct = async (req, res) =>{
             Args[key]=req.body.filters[key]
         }
     }
-    
+    // )
     
     let filterProduct = await Product.find(Args)
     .populate('category')
@@ -123,7 +125,7 @@ exports.filterProduct = async (req, res) =>{
         return res.status(400).json({error:"something went wrong"})
     }
     else{
-        res.status(200).json({
+        res.json({
             size:filterProduct.length,
             filterProduct
         })
