@@ -23,8 +23,8 @@ exports.showProducts = async (req, res) => {
     let sortBy = req.query.order ? req.query.sortBy : '_id'
     let limit = req.query.order ? parseInt(req.query.limit) : 20000
 
-    let products = await Product.find().populate('category').sort([[sortBy,order]])
-    .limit(limit)
+    let products = await Product.find().populate('category').sort([[sortBy, order]])
+        .limit(limit)
     if (!products) {
         return res.status(400).json({ error: "something went wrong" })
     }
@@ -82,17 +82,17 @@ exports.deleteProduct = (req, res) => {
 }
 
 // to find related products
-exports.findRelated = async (req,res) => {
-    let singleProduct =await Product.findById(req.params.id)
-    let product =await Product.find({category:singleProduct.category, _id:{$ne:singleProduct}}).populate('category','category_name')
-    if(!product){
-        return res.status(400).json({error:"Something went wrong"})
+exports.findRelated = async (req, res) => {
+    let singleProduct = await Product.findById(req.params.id)
+    let product = await Product.find({ category: singleProduct.category, _id: { $ne: singleProduct } }).populate('category', 'category_name')
+    if (!product) {
+        return res.status(400).json({ error: "Something went wrong" })
     }
     res.send(product)
 }
 
 // to find filtered products
-exports.filterProduct = async (req, res) =>{
+exports.filterProduct = async (req, res) => {
     let order = req.query.order ? req.query.order : 1
     let sortBy = req.query.order ? req.query.sortBy : '_id'
     let limit = req.query.order ? parseInt(req.query.limit) : 20000
@@ -100,33 +100,38 @@ exports.filterProduct = async (req, res) =>{
 
     //to get filters
     let Args = {}
-    for(let key in req.body.filters){
-        if(req.body.filters[key].length>0)
-    // req.body.filters.map(key=>{
-        if(key === 'product_price'){
-            Args[key]={
-                $gte: req.body.filters[key][0],
-                $lte: req.body.filters[key][1]
+    for (let key in req.body.filters) {
+
+        // {category:[], product_price:[0 , 999]}
+        // [{},{}]
+        if (req.body.filters[key].length > 0)
+        {
+            if (key === 'product_price') {
+                Args[key] = {
+                    $gte: req.body.filters[key][0],
+                    $lte: req.body.filters[key][1]
+                }
+            }
+            else {
+                Args[key] = req.body.filters[key]
             }
         }
-        else{
-            Args[key]=req.body.filters[key]
-        }
+            
     }
     // )
-    
-    let filterProduct = await Product.find(Args)
-    .populate('category')
-    .sort([[sortBy, order]])
-    .limit(limit)
-    .skip(skip)
 
-    if(!filterProduct){
-        return res.status(400).json({error:"something went wrong"})
+    let filterProduct = await Product.find(Args)
+        .populate('category')
+        .sort([[sortBy, order]])
+        .limit(limit)
+        .skip(skip)
+
+    if (!filterProduct) {
+        return res.status(400).json({ error: "something went wrong" })
     }
-    else{
+    else {
         res.json({
-            size:filterProduct.length,
+            size: filterProduct.length,
             filterProduct
         })
     }

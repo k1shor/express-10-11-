@@ -214,7 +214,7 @@ exports.resetPassword = async (req, res) =>{
     return res.status(400).json({error: "Email not registered."})
   }
   // reset password
-  user.password = req.body.password
+  user.password = req.body.new_password
   user = await user.save()
 
   if(!user){
