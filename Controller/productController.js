@@ -94,8 +94,9 @@ exports.findRelated = async (req, res) => {
 // to find filtered products
 exports.filterProduct = async (req, res) => {
     let order = req.query.order ? req.query.order : 1
-    let sortBy = req.query.order ? req.query.sortBy : '_id'
-    let limit = req.query.order ? parseInt(req.query.limit) : 20000
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id'
+    let limit = req.query.limit ? parseInt(req.query.limit) : 20000
+    // let limit = req.query.limit ? 8 : 20000
     let skip = req.body.skip
 
     //to get filters
