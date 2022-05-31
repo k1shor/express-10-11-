@@ -20,8 +20,8 @@ exports.addProduct = async (req, res) => {
 // to show all products
 exports.showProducts = async (req, res) => {
     let order = req.query.order ? req.query.order : 1
-    let sortBy = req.query.order ? req.query.sortBy : '_id'
-    let limit = req.query.order ? parseInt(req.query.limit) : 20000
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id'
+    let limit = req.query.limit ? parseInt(req.query.limit) : 20000
 
     let products = await Product.find().populate('category').sort([[sortBy, order]])
         .limit(limit)
@@ -102,7 +102,6 @@ exports.filterProduct = async (req, res) => {
     //to get filters
     let Args = {}
     for (let key in req.body.filters) {
-
         // {category:[], product_price:[0 , 999]}
         // [{},{}]
         if (req.body.filters[key].length > 0)
@@ -116,17 +115,21 @@ exports.filterProduct = async (req, res) => {
             else {
                 Args[key] = req.body.filters[key]
             }
-        }
-            
+        }   
     }
-    // )
+    // filter[category] = ['asdf','dfsf']
+    // args[category] = ['asdf','dfsf']
+    // filter[product_price] = [0,999]
+    // args[product_price].gte :0
+    // args[product_price].lte :999
+    // { }
 
+    // )
     let filterProduct = await Product.find(Args)
         .populate('category')
         .sort([[sortBy, order]])
         .limit(limit)
         .skip(skip)
-
     if (!filterProduct) {
         return res.status(400).json({ error: "something went wrong" })
     }
