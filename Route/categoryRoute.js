@@ -11,7 +11,7 @@ const { categoryCheck, validation } = require('../Validation/validation')
 // router.get('/',showInfo)
 // router.get('/message',showMessage)
 
-router.post('/addcategory',categoryCheck,validation, addCategory)
+router.post('/addcategory',requireSignin, categoryCheck,validation, addCategory)
 
 router.get('/categories',showCategories)
 router.get('/findcategory/:id',findCategory)
